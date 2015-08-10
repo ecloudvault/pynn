@@ -1,0 +1,12 @@
+<template is="dom-bind">
+  <iron-ajax url="data.json" last-response="{{data}}" auto></iron-ajax>
+  <iron-list items="[[data]]" as="item">
+    <template>
+      <div>
+        Name: <span>[[item.name]]</span>
+      </div>
+    </template>
+  </iron-list>
+</template>
+
+

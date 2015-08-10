@@ -1,0 +1,56 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<dom-module id="aws-list">
+  <style>
+    :host {
+      display: block;
+    }
+  </style>
+  <template>
+    <section>
+    <ul>
+      <template is="dom-repeat" items="{{items}}">
+        <li><a class="paper-font-body1" href="{{item.stream.S}}">{{item.raw.S}}</a></li>
+      </template>
+    </ul>
+    </section>
+  </template>
+
+  <script>
+    (function () {
+      Polymer({
+        is: 'aws-list',
+        properties: {
+          items: {
+            type: Array,
+            notify: true,
+          }
+        },
+        ready: function() {
+            var db = new AWS.DynamoDB( {apiVersion: '2012-08-10', region: 'us-west-2', accessKeyId: 'AKIAIOAPI7JRYJUHZKFQ', secretAccessKey: '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'} );
+            var parms = { TableName: 'VideoAssets', IndexName: 'org-owner-index', KeyConditionExpression: 'organization = :val', ExpressionAttributeValues: { ':val': { S: 'ecloudvault' } } };
+            
+            db.query( parms, function(err, data) {
+              if (err) {
+                console.log(err);
+              }
+              else {
+                console.log(data);
+                var awsl = document.getElementById('joe');
+                awsl.items = data.Items;
+              }
+            });
+        }
+      });
+    })();
+  </script>
+
+</dom-module>
