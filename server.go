@@ -88,9 +88,10 @@ const indexPage = `
 `
 
 func indexPageHandler(response http.ResponseWriter, request *http.Request) {
-		t, _ := template.New("foo").Parse(indexTemplate)
-		t.Execute(response, nil)
+		//t, _ := template.New("foo").Parse(indexTemplate)
+		//t.Execute(response, nil)
     //fmt.Fprintf(response, indexPage)
+    http.ServeFile(response, request, "/home/stephen/ecloud/pynn/app/splash.html");
 }
 
 // internal page
@@ -131,6 +132,7 @@ func callbackPageHandler(res http.ResponseWriter, req *http.Request) {
 func ServeStatic(router *mux.Router, staticDirectory string) {
     staticPaths := map[string]string {
         "app":                 staticDirectory + "/app/",
+        "elements":            staticDirectory + "/app/elements/",
         "styles":              staticDirectory + "/app/styles/",
         "images":              staticDirectory + "/app/images/",
         "scripts":             staticDirectory + "/app/scripts/",
@@ -168,18 +170,18 @@ func main() {
     amazon.New(os.Getenv("AMAZON_KEY"), os.Getenv("AMAZON_SECRET"), "https://ecloud.nimbostrati.com:9898/auth/amazon/callback", "profile"),
 	)
 	
-  router.HandleFunc("/iph", indexPageHandler)
+  router.HandleFunc("/", indexPageHandler)
 	router.HandleFunc("/auth/amazon/callback", callbackPageHandler)
 	router.HandleFunc("/auth/amazon", gothic.BeginAuthHandler)
 
-	router.HandleFunc("/internal", internalPageHandler)
+	//router.HandleFunc("/internal", internalPageHandler)
 
-	router.HandleFunc("/login", loginHandler).Methods("POST")
-	router.HandleFunc("/logout", logoutHandler).Methods("POST")
+	//router.HandleFunc("/login", loginHandler).Methods("POST")
+	//router.HandleFunc("/logout", logoutHandler).Methods("POST")
 
   //router.PathPrefix("/images/").Handler(http.StripPrefix("/images/", http.FileServer(http.Dir("/home/stephen/ecloud/entrypoint/app/images/"))))
 
-  ServeStatic(router, "/home/stephen/ecloud/entrypoint/")
+  ServeStatic(router, "/home/stephen/ecloud/pynn/")
 //  ServeBower(router, "/home/stephen/ecloud/entrypoint/")
 
 	http.Handle("/", router)
