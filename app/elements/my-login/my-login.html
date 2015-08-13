@@ -22,16 +22,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </style>
   <div>
     <template>
-    <div is="dom-bind"><input type="checkbox" checked="{{showAnswer}}" on-change="toggleAnswer">Show?:</input>
-    <span><button on-click="toggleAnswer">Toggle</button></span></div>
+    <input type="checkbox" checked="{{showAnswer}}" on-change="toggleAnswer">Show?:</input>
+    <span><button on-click="toggleAnswer">Toggle</button></span>
     <template is="dom-if" if="{{showAnswer}}">
-      <span>Login</span>
+          <a href="#" id="LoginWithAmazon" on-click="login">
+            <img border="0" alt="Login with Amazon"
+              src="https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_156x32.png"
+              width="156" height="32" />
+          </a>
     </template>
     <template is="dom-if" if="{{!showAnswer}}">
-      <span>Logout</span>
+          <a href="#" id="Logout" on-click="logout">Logout</a>
     </template>
     </template>
   </div>
+
+</dom-module>
+
 
   <script>
     (function() {
@@ -49,9 +56,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         toggleAnswer: function(e, detail, sender) {
             this.showAnswer = !this.showAnswer;
             console.log("toggling");
+        },
+
+        login: function() {
+              options = { scope : 'profile' };
+              amazon.Login.setClientId('amzn1.application-oa2-client.2230e1a3313f43bfaf748d9487cd4b7e');
+              amazon.Login.authorize(options, '/');
+              return false;
+        },
+
+        logout: function() {
+              amazon.Login.logout();
         }
+
       });
     })();
   </script>
 
-</dom-module>
