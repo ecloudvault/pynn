@@ -164,12 +164,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             };
           </script>
 
-          <a id="Logout">Logout</a>
+          <a href="#" id="Logout">Logout</a>
           <script type="text/javascript">
             document.getElementById('Logout').onclick = function() {
               amazon.Login.logout();
             };
           </script>
+
+          <my-login id="userstatus"></my-login>
 
         </paper-menu>
       </paper-scroll-header-panel>
@@ -241,6 +243,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <paper-material elevation="1">
                 <h2 class="paper-font-display2">Contact</h2>
                 <p>This is the contact section</p>
+              </paper-material>
+              <paper-material elevation="1">
+                <my-login id="userstatus"></my-login>
               </paper-material>
             </section>
 
