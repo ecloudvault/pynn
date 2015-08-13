@@ -52,7 +52,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <!-- build: -->
   <script src="bower_components/aws-sdk-js/dist/aws-sdk.js"></script>
-  <script src="https://api-cdn.amazon.com/sdk/login1.js"></script>
   <!-- endbuild -->
 
   <!-- will be replaced with elements/elements.vulcanized.html -->
@@ -61,23 +60,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 </head>
 
 <body unresolved class="fullbleed layout vertical">
-  <!--- Amazon Login -->
-  <div id="amazon-root"></div>
-  <script type="text/javascript">
-    window.onAmazonLoginReady = function() {
-      amazon.Login.setClientId('amzn1.application-oa2-client.2230e1a3313f43bfaf748d9487cd4b7e');
-    };
-    (function(d) {
-      var a = d.createElement('script');
-          a.type = 'text/javascript';
-          a.async = true;
-          a.id = 'amazon-login-sdk';
-          a.src = 'https://api-cdn.amazon.com/sdk/login1.js';
-          d.getElementById('amazon-root').appendChild(a);
-    })(document);
-
-  </script>
-  <!-- -->
 
   <script type="text/javascript">
     function getUrlVariable(variable)
@@ -222,9 +204,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <paper-material elevation="1">
                 <h2 class="paper-font-display2">Contact</h2>
                 <p>This is the contact section</p>
-              </paper-material>
-              <paper-material elevation="1">
-                <my-login id="userstatus"></my-login>
               </paper-material>
             </section>
 

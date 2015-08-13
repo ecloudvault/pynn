@@ -22,18 +22,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </style>
   <div>
     <template>
-    <input type="checkbox" checked="{{showAnswer}}" on-change="toggleAnswer">Show?:</input>
-    <span><button on-click="toggleAnswer">Toggle</button></span>
-    <template is="dom-if" if="{{showAnswer}}">
+      <!--- Amazon Login -->
+      <div id="amazon-root">
+        <script src="https://api-cdn.amazon.com/sdk/login1.js"></script>
+      </div>
+
+      <input type="checkbox" checked="{{showAnswer}}" on-change="toggleAnswer">Show?:</input>
+      <span><button on-click="toggleAnswer">Toggle</button></span>
+      <template is="dom-if" if="{{showAnswer}}">
           <a href="#" id="LoginWithAmazon" on-click="login">
             <img border="0" alt="Login with Amazon"
               src="https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_156x32.png"
               width="156" height="32" />
           </a>
-    </template>
-    <template is="dom-if" if="{{!showAnswer}}">
+      </template>
+      <template is="dom-if" if="{{!showAnswer}}">
           <a href="#" id="Logout" on-click="logout">Logout</a>
-    </template>
+      </template>
     </template>
   </div>
 
