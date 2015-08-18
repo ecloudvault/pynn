@@ -22,13 +22,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </style>
   <div>
     <template>
-      <!--- Amazon Login -->
+      <!--- Amazon Login
       <div id="amazon-root">
         <script src="https://api-cdn.amazon.com/sdk/login1.js"></script>
       </div>
-
-      <input type="checkbox" checked="{{showAnswer}}" on-change="toggleAnswer">Show?:</input>
-      <span><button on-click="toggleAnswer">Toggle</button></span>
+      -->
+      <!-- <input type="checkbox" checked="{{showAnswer}}" on-change="toggleAnswer">Show?:</input>
+      <span><button on-click="toggleAnswer">Toggle</button></span> -->
       <template is="dom-if" if="{{showAnswer}}">
           <a href="#" id="LoginWithAmazon" on-click="login">
             <img border="0" alt="Login with Amazon"
@@ -37,7 +37,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </a>
       </template>
       <template is="dom-if" if="{{!showAnswer}}">
-          <a href="#" id="Logout" on-click="logout">Logout</a>
+          <div id="dname">{{displayName}}</div>
+          <div>
+            <a href="#" id="Logout" on-click="logout">Logout</a>
+          </div>
       </template>
     </template>
   </div>
@@ -55,6 +58,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             type: Boolean,
             value: true,
             notify: true
+          },
+          displayName: {
+            type: String,
+            value: '',
+            notify: true
           }
         },
 
@@ -64,14 +72,96 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
 
         login: function() {
-              options = { scope : 'profile' };
+              options = { scope : 'profile' }; //, redirect_uri: '/' };
               amazon.Login.setClientId('amzn1.application-oa2-client.2230e1a3313f43bfaf748d9487cd4b7e');
               amazon.Login.authorize(options, '/');
+              //amazon.Login.authorize(options, function(rsp) {
+              //    if(rsp.error) {
+              //        alert('oauth error: ' + rsp.error);
+              //        return false;
+              //    }
+              //    amazon.Login.retrieveProfile(rsp.access_token, function(rsp) {
+              //        this.diplayName = rsp.profile.Name;
+                      //alert(rsp);
+              //        this.showAnswer = false;
+              //        return false;
+              //    });
+              //});
               return false;
         },
 
         logout: function() {
+              this.showAnswer = true;
               amazon.Login.logout();
+        },
+
+        getUrlVariable: function(k) {
+          var query = window.location.search.substring(1);
+          var vars  = query.split("&");
+          for( var i=0; i < vars.length; ++i) {
+            var pair = vars[i].split("=");
+            if( pair[0] == k ) { return decodeURIComponent( pair[1] ); }
+          }
+          return(false);
+        },
+          
+        ready: function() {
+          var token = this.getUrlVariable( "access_token" );
+
+          var params = { IdentityPoolId: "us-east-1:19b5c28d-8cd3-42ac-b37e-158052ed4f7d" };
+          //var params2 = {};
+
+          if( token ) {
+            this.showAnswer = false;
+            params.Logins = { 'www.amazon.com' : token }
+            //params2.Logins = { 'www.amazon.com' : token }
+            amazon.Login.setClientId('amzn1.application-oa2-client.2230e1a3313f43bfaf748d9487cd4b7e');
+
+            amazon.Login.retrieveProfile(token, function(rsp) {
+              //this.displayName = rsp.profile.Name;
+              //this.$.dname.textContent = this.displayName;
+              document.getElementById('dname').textContent = rsp.profile.Name;
+                      //alert(rsp);
+              //        this.showAnswer = false;
+                      return false;
+              });
+          };
+
+          AWS.config.region = 'us-east-1';
+
+          AWS.config.credentials = new AWS.CognitoIdentityCredentials(params);
+
+          AWS.config.credentials.get(function(err) {
+            if (err) {
+              this.showAnswer = true;
+              console.log("Error: " + err);
+            }
+            console.log("Cognito Identity Id: " + AWS.config.credentials.identityId);
+
+            //params2.IdentityId = AWS.config.credentials.identityId;
+
+            //var cognitoSyncClient = new AWS.CognitoSync();
+            //cognitoSyncClient.listDatasets({
+              //IdentityId: AWS.config.credentials.identityId,
+              //IdentityPoolId: "us-east-1:19b5c28d-8cd3-42ac-b37e-158052ed4f7d"
+              //}, function(err, data) {
+              //     if (!err) {
+              //       console.log(JSON.stringify(data));
+              //     }
+            //});
+    //amazon.Login.setClientId('amzn1.application-oa2-client.2230e1a3313f43bfaf748d9487cd4b7e');
+    //var options = { scope : 'profile' };
+    //var token = amazon.Login.authorize(options, "/"); //getUrlVariable( "access_token" );
+    
+
+    //var ci = new AWS.CognitoIdentity();
+    //params2.IdentityId = 'us-east-1:14f2cb94-7092-42f0-bf0c-47c69c6a29db';
+    //console.log( "open id token attempt" );
+    //ci.getOpenIdToken(params2, function(err, data) {
+    //  if (err) console.log(err, err.stack);
+    //  else console.log(data);
+    //});
+          });
         }
 
       });

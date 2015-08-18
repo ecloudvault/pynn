@@ -61,52 +61,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <body unresolved class="fullbleed layout vertical">
 
-  <script type="text/javascript">
-    function getUrlVariable(variable)
-    {
-       var query = window.location.search.substring(1);
-       var vars  = query.split("&");
-       for( var i=0; i < vars.length; ++i) {
-         var pair = vars[i].split("=");
-         if( pair[0] == variable ) { return decodeURIComponent( pair[1] ); }
-       }
-       return(false);
-    }
-
-    //amazon.Login.setClientId('amzn1.application-oa2-client.2230e1a3313f43bfaf748d9487cd4b7e');
-    //var options = { scope : 'profile' };
-    //var token = amazon.Login.authorize(options, "/"); //getUrlVariable( "access_token" );
-    
-    var token = getUrlVariable( "access_token" );
-
-    var params = { IdentityPoolId: "us-east-1:19b5c28d-8cd3-42ac-b37e-158052ed4f7d" };
-
-    if( token ) {
-      params.Logins = { 'www.amazon.com' : token }
-    };
-
-    AWS.config.region = 'us-east-1';
-
-    AWS.config.credentials = new AWS.CognitoIdentityCredentials(params);
-
-    AWS.config.credentials.get(function(err) {
-      if (err) {
-        console.log("Error: "+err);
-        return;
-      }
-      console.log("Cognito Identity Id: " + AWS.config.credentials.identityId);
-
-      var cognitoSyncClient = new AWS.CognitoSync();
-      cognitoSyncClient.listDatasets({
-        IdentityId: AWS.config.credentials.identityId,
-        IdentityPoolId: "us-east-1:19b5c28d-8cd3-42ac-b37e-158052ed4f7d"
-        }, function(err, data) {
-             if (!err) {
-               console.log(JSON.stringify(data));
-             }
-      });
-    });
-  </script>
+      <div id="amazon-root">
+        <script src="https://api-cdn.amazon.com/sdk/login1.js"></script>
+      </div>
 
   <span id="browser-sync-binding"></span>
   <template is="dom-bind" id="app">

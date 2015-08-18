@@ -128,6 +128,11 @@ func callbackPageHandler(res http.ResponseWriter, req *http.Request) {
 		t.Execute(res, user)
 	}
 
+func startAuthHandler(res http.ResponseWriter, req *http.Request) {
+		fmt.Println("Start Auth Handler: " + gothic.GetState(req));
+    gothic.BeginAuthHandler(res,req);
+	}
+
 // static files handling
 func ServeStatic(router *mux.Router, staticDirectory string) {
     staticPaths := map[string]string {
@@ -172,7 +177,8 @@ func main() {
 	
   router.HandleFunc("/", indexPageHandler)
 	router.HandleFunc("/auth/amazon/callback", callbackPageHandler)
-	router.HandleFunc("/auth/amazon", gothic.BeginAuthHandler)
+	//router.HandleFunc("/auth/amazon", gothic.BeginAuthHandler)
+	router.HandleFunc("/auth/amazon", startAuthHandler)
 
 	//router.HandleFunc("/internal", internalPageHandler)
 
@@ -186,6 +192,7 @@ func main() {
 
 	http.Handle("/", router)
 	//http.ListenAndServe(":8000", nil)
+  fmt.Println("About to listen and serve.")
   http.ListenAndServeTLS(":9898", os.Getenv("GOTH_SSL_CERT"), os.Getenv("GOTH_SSL_KEY"), nil) 
 }
 
