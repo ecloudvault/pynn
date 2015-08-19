@@ -37,22 +37,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         ready: function() {
             this.bucket = new AWS.S3({params: {region: 'us-west-2', Bucket: 'videopail'}});
             //this.bucket.endpoint = 'https://videopail.s3-us-west-2.amazonaws.com';
-            this.loadResults = this.bucket.endpoint;
+            //this.loadResults = this.bucket.endpoint;
         },
 
         load: function() {
+            var self = this;
             var fileChooser = document.getElementById('file-chooser');
             var file = fileChooser.files[0];
 
             if (file) {
               this.loadResults = '';
 
-              var params = {Key: file.name, ContentType: file.type, Body: file};
+              var params = {Key: 'video/raw/'+file.name, ContentType: file.type, Body: file};
               this.bucket.upload(params, function(err,data) {
                 if(err) {
-                  this.loadResults = 'ERROR: ';
+                  self.loadResults = 'ERROR: ';
                 } else {
-                  this.loadResults = 'UPLOADED.';
+                  self.loadResults = 'UPLOADED: ' + data.ETag;
                 }
               });
             } else {
