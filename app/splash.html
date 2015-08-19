@@ -89,6 +89,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <span>Contact</span>
           </a>
 
+          <a data-route="upload" href="/upload">
+            <iron-icon icon="mail"></iron-icon>
+            <span>Upload</span>
+          </a>
+
           <my-login id="userstatus"></my-login>
 
         </paper-menu>
@@ -161,6 +166,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <paper-material elevation="1">
                 <h2 class="paper-font-display2">Contact</h2>
                 <p>This is the contact section</p>
+              </paper-material>
+            </section>
+
+            <section data-route="upload">
+              <paper-material elevation="1">
+                <h2 class="paper-font-display2">Upload</h2>
+                <p>This is the file upload section</p>
+              </paper-material>
+              <paper-material elevation="1">
+                <s3-upload></s3-upload>
               </paper-material>
             </section>
 
