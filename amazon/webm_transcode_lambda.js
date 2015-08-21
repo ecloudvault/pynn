@@ -56,7 +56,7 @@ exports.jobCreator = function(event, context) {
     var bucket = event.Records[0].s3.bucket.name;
     var key = event.Records[0].s3.object.key;
     if (bucket != 'videopail') {
-      console.log('Not my-bucket')
+      console.log('Not my-bucket');
     }
     var s3params = {
         Bucket: bucket,
@@ -151,9 +151,10 @@ exports.jobCreator = function(event, context) {
                                   }
             });
           }
-        });
-    }
+        }
+    });
     
     console.log('non video event');
+    }
 };
 
