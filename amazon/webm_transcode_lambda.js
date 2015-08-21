@@ -5,7 +5,7 @@ var AWS = require('aws-sdk');
 var s3 = new AWS.S3({apiVersion: '2006-03-01'});
 
 // DynamoDB
-var table = new aws.DynamoDB( {apiVersion: '2012-08-10', region:  'us-west-2',
+var table = new AWS.DynamoDB( {apiVersion: '2012-08-10', region:  'us-west-2',
                 accessKeyId: 'AKIAIOAPI7JRYJUHZKFQ', secretAccessKey: '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', params: {TableName: 'VideoLibrary'}});
 
 // Elastic Transcoder
@@ -40,7 +40,7 @@ exports.jobCreator = function(event, context) {
         "Organization": {
             "S": "ecloudvault"
         },
-        "Ownerid": {
+        "OwnerID": {
             "S": "ggrajek"
         },
         "Description": {
