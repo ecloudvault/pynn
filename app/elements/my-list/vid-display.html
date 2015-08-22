@@ -1,0 +1,42 @@
+<!--
+@license
+Copyright (c) 2015 eCloudVault Authors. All rights reserved.
+-->
+
+<dom-module id="vid-display">
+  <style>
+    :host {
+      display: block;
+    }
+  </style>
+  <template>
+    <div>
+    <input class="paper-font-body2" value="{{videoURL::input}}">
+    <button class="paper-font-body2" on-click="setSource">play</button>
+    </div>
+    <div>{{videoURL}}</div>
+    <video id="vdisplay" width="320" height="240" controls>
+      <source id="vsource" type="video/webm">
+    </video>
+  </template>
+
+  <script>
+    (function () {
+      Polymer({
+        is: 'vid-display',
+        properties: {
+          videoURL: {
+            type: String,
+            notify: true
+          }
+        },
+
+        setSource: function() {
+          this.$.vsource.src = this.videoURL;
+          this.$.vdisplay.load();
+        }
+      });
+    })();
+  </script>
+
+</dom-module>

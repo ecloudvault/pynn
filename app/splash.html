@@ -95,6 +95,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <span>Videos</span>
           </a>
 
+          <a data-route="view" href="/view">
+            <iron-icon icon="theaters"></iron-icon>
+            <span>View</span>
+          </a>
+
           <a data-route="upload" href="/upload">
             <iron-icon icon="cloud-upload"></iron-icon>
             <span>Upload</span>
@@ -191,11 +196,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <section data-route="vlist">
               <paper-material elevation="1">
                 <p class="paper-font-subhead">You now have videos:</p>
-                <aws-list id="joe"></aws-list>
+                <aws-list id="joe" vsource="{{vurl}}"></aws-list>
               </paper-material>
 
               <paper-material elevation="1">
-                <p class="paper-font-body2">Just some text in a box.</p>
+                <p class="paper-font-body2">{{vurl}}</p>
+              </paper-material>
+            </section>
+
+            <section data-route="view">
+              <paper-material elevation="1">
+                <vid-display id="vid"></vid-display>
               </paper-material>
             </section>
 

@@ -18,7 +18,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <section>
     <ul>
       <template is="dom-repeat" items="{{items}}">
-        <li><a class="paper-font-body1" href="{{item.Streampath.S}}">{{item.VideoID.S}}</a></li>
+        <li><a class="paper-font-body1" href="/view" on-click="vurl">{{item.VideoID.S}}</a></li>
       </template>
     </ul>
     </section>
@@ -32,8 +32,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           items: {
             type: Array,
             notify: true,
+          },
+          vsource: {
+            type: String,
+            notify: true,
           }
         },
+
+        vurl: function() {
+          this.vsource = this.items[1].Streampath.S;
+        },
+
         ready: function() {
             var db = new AWS.DynamoDB( {apiVersion: '2012-08-10', region: 'us-west-2', accessKeyId: 'AKIAIOAPI7JRYJUHZKFQ', secretAccessKey: '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'} );
             var parms = { TableName: 'VideoLibrary', IndexName: 'org-owner-index', KeyConditionExpression: 'Organization = :val', ExpressionAttributeValues: { ':val': { S: 'ecloudvault' } } };
