@@ -13,15 +13,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     :host {
       display: block;
     }
+
+    .iron-selected {
+      background: #eee;
+    }
   </style>
   <template>
     <section>
-    <ul>
+    <iron-selector selected="{{selectedvideo}}">
       <template is="dom-repeat" items="{{items}}">
-        <li><a class="paper-font-body1" href="/view" on-click="vurl">{{item.VideoID.S}}</a></li>
+        <div class="item" on-tap="showSource">{{item.VideoID.S}}</div>
       </template>
-    </ul>
+    </iron-selector>
     </section>
+    <h3>{{selectedvideo}}</h3>
+    <h3 id="vsrc">{{vsource}}</h3>
   </template>
 
   <script>
@@ -29,18 +35,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       Polymer({
         is: 'aws-list',
         properties: {
+          selectedvideo: {
+            type: Number,
+            notify: true,
+          },
           items: {
             type: Array,
             notify: true,
           },
           vsource: {
-            type: String,
-            notify: true,
+            computed: 'vurl()'
           }
         },
 
         vurl: function() {
-          this.vsource = this.items[1].Streampath.S;
+          this.vsource = this.items[this.selectedvideo].Streampath.S;
+        },
+
+        showSource: function(e) {
+          this.$.vsrc.textContent = e.model.item.Streampath.S;
         },
 
         ready: function() {
