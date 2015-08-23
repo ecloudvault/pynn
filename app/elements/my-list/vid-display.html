@@ -11,13 +11,14 @@ Copyright (c) 2015 eCloudVault Authors. All rights reserved.
   </style>
   <template>
     <div>
-    <input class="paper-font-body2" value="{{videoURL::input}}">
+    <input class="paper-font-body2" value="{{vsource}}">
     <button class="paper-font-body2" on-click="setSource">play</button>
     </div>
-    <div>{{videoURL}}</div>
+    <div>{{vsource}}</div>
     <video id="vdisplay" width="320" height="240" controls>
-      <source id="vsource" type="video/webm">
+      <source id="vsrc" type="video/webm">
     </video>
+    <div>current src: <span id="current"></span></div>
   </template>
 
   <script>
@@ -25,14 +26,19 @@ Copyright (c) 2015 eCloudVault Authors. All rights reserved.
       Polymer({
         is: 'vid-display',
         properties: {
-          videoURL: {
+          vsource: {
             type: String,
             notify: true
           }
         },
 
+        ready: function() {
+          this.$.current.textContent = this.$.vsrc.src;
+        },
+
         setSource: function() {
-          this.$.vsource.src = this.videoURL;
+          this.$.vsrc.src = 'https://s3-us-west-2.amazonaws.com/videopail/' + this.vsource;
+          this.$.current.textContent = this.$.vsrc.src;
           this.$.vdisplay.load();
         }
       });
