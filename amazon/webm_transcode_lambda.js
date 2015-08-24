@@ -64,7 +64,9 @@ exports.jobCreator = function(event, context) {
     };
    
     var keySegments = key.split('/');
-    var baseName = keySegments[keySegments.length - 1].split('.')[0];
+    var nameSegments = keySegments[keySegments.length - 1].split('.');
+    var baseName = nameSegments[0];
+    var extName = nameSegments[nameSegments.length - 1];
 
     if(keySegments.length == 3) {
 
@@ -76,6 +78,7 @@ exports.jobCreator = function(event, context) {
         } else {
 
           if ( (data.ContentType == 'application/octet-stream') 
+              || (data.ContentType == 'video/x-msvideo')
               || (data.ContentType == 'video/x-msvideo; charset=UTF-8') ) {
 
             console.log('Found new video: ' + key + ', sending to ET');
@@ -109,7 +112,7 @@ exports.jobCreator = function(event, context) {
                 Outputs: [
                   {
                     Key: baseName + '.webm',
-                    ThumbnailPattern: '',
+                    ThumbnailPattern: baseName + '.{count}',
                     PresetId: webMPresetCustom,
                     Rotate: 'auto'
                     //UserMetadata: {
@@ -137,7 +140,7 @@ exports.jobCreator = function(event, context) {
 
             var qkey = {'VideoID': {'S': baseName}};
                       
-            var upexpress = "set Streampath = :val1";
+            var upexpress = extName == 'webm' ? "set Streampath = :val1" : "set Posterpath = :val1";
                      
             table.updateItem( { Key: qkey,
                                 UpdateExpression: upexpress,
@@ -150,6 +153,18 @@ exports.jobCreator = function(event, context) {
                                     //context.succeed('Succeed at getItem');
                                   }
             });
+            
+            s3.putObjectAcl( { Bucket: 'videopail',
+                                Key: key,
+                                ACL: 'public-read' },
+                                function(err,s3data) {
+                                  if(err) {
+                                    console.log('s3 (permissions put) error: ' + err );
+                                  } else {
+                                    console.log('s3 response:', JSON.stringify(s3data));
+                                    //context.succeed('Succeed at getItem');
+                                  }
+            });
           }
         }
     });
@@ -157,4 +172,3 @@ exports.jobCreator = function(event, context) {
     console.log('non video event');
     }
 };
-

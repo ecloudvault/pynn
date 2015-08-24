@@ -22,7 +22,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <section>
     <iron-selector selected="{{selectedvideo}}">
       <template is="dom-repeat" items="{{items}}">
-        <div class="vitem" on-tap="showSource">{{item.VideoID.S}}</div>
+        <vid-item item="{{item}}" vsource="{{vsource}}"/>
       </template>
     </iron-selector>
     </section>
@@ -49,15 +49,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           }
         },
 
-        //vurl: function() {
-        //  this.vsource = this.items[this.selectedvideo].Streampath.S;
-        //},
-
-        showSource: function(e) {
-          this.$.vsrc.textContent = e.model.item.Streampath.S;
-          this.vsource = e.model.item.Streampath.S;
-          page.redirect('/view');
-        },
 
         ready: function() {
             var self = this;

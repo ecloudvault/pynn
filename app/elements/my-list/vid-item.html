@@ -1,0 +1,58 @@
+<!--
+@license
+Copyright (c) 2015 eCloudVault Authors. All rights reserved.
+-->
+
+<dom-module id="vid-item">
+  <style>
+    :host {
+      display: inline;
+    }
+  </style>
+
+  <template>
+    <section>
+        <div class="vitem" >{{item.VideoID.S}}</div>
+        <div class="vitem" on-tap="showSource">View</div>
+        <img class="vitem" width="100 px" on-tap="showSource" src="{{posterPath}}"/>
+    </section>
+  </template>
+
+  <script>
+    (function () {
+      Polymer({
+        is: 'vid-item',
+        properties: {
+          item: {
+            type: Object,
+            notify: true,
+          },
+          vsource: {
+            type: String,
+            notify: true,
+          },
+          streamPath: {
+            type: String
+          },
+          posterPath: {
+            type: String,
+            computed: 'poster(item)'
+          }
+        },
+
+        poster: function(i) {
+          this.streamPath = i.Streampath.S;
+          return "https://s3-us-west-2.amazonaws.com/videopail/" + i.Posterpath.S;
+        },
+
+        showSource: function(e) {
+          //this.$.vsrc.textContent = e.model.item.Streampath.S;
+          this.vsource = this.streamPath;
+          page.redirect('/view');
+        },
+
+      });
+    })();
+  </script>
+
+</dom-module>
