@@ -6,15 +6,19 @@ Copyright (c) 2015 eCloudVault Authors. All rights reserved.
 <dom-module id="vid-item">
   <style>
     :host {
-      display: inline;
+      display: block;
     }
   </style>
 
   <template>
     <section>
-        <div class="vitem" >{{item.VideoID.S}}</div>
-        <div class="vitem" on-tap="showSource">View</div>
-        <img class="vitem" width="100 px" on-tap="showSource" src="{{posterPath}}"/>
+      <table>
+        <tr>
+        <td><div>{{item.VideoID.S}}</div></td>
+        <td><button on-tap="showSource">View</button></td>
+        <td><img width="100 px" on-tap="showSource" src="{{posterPath}}"/></td>
+        </tr>
+      </table>
     </section>
   </template>
 
@@ -31,6 +35,10 @@ Copyright (c) 2015 eCloudVault Authors. All rights reserved.
             type: String,
             notify: true,
           },
+          bucket: {
+            type: String,
+            value: 'https://s3-us-west-2.amazonaws.com/videopail/'
+          },
           streamPath: {
             type: String
           },
@@ -41,12 +49,12 @@ Copyright (c) 2015 eCloudVault Authors. All rights reserved.
         },
 
         poster: function(i) {
-          this.streamPath = i.Streampath.S;
-          return "https://s3-us-west-2.amazonaws.com/videopail/" + i.Posterpath.S;
+          this.streamPath = i.Streampath ? i.Streampath.S : '';
+          var fullPath = i.Posterpath ? this.bucket + i.Posterpath.S : '';
+          return fullPath;
         },
 
         showSource: function(e) {
-          //this.$.vsrc.textContent = e.model.item.Streampath.S;
           this.vsource = this.streamPath;
           page.redirect('/view');
         },

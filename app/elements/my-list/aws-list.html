@@ -20,14 +20,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </style>
   <template>
     <section>
+      <paper-icon-button id="refresh" icon="refresh" on-tap="fetch"></paper-icon-button>
+      <hr/>
+    </section>
+    <section>
     <iron-selector selected="{{selectedvideo}}">
       <template is="dom-repeat" items="{{items}}">
         <vid-item item="{{item}}" vsource="{{vsource}}"/>
       </template>
     </iron-selector>
     </section>
-    <h3>{{selectedvideo}}</h3>
-    <h3 id="vsrc">{{vsource}}</h3>
+    <!-- h3>{{selectedvideo}}</h3>
+    <h3 id="vsrc">{{vsource}}</h3 -->
   </template>
 
   <script>
@@ -49,8 +53,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           }
         },
 
-
         ready: function() {
+            this.fetch();
+        },
+
+        fetch: function() {
             var self = this;
             var db = new AWS.DynamoDB( {apiVersion: '2012-08-10', region: 'us-west-2', accessKeyId: 'AKIAIOAPI7JRYJUHZKFQ', secretAccessKey: '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'} );
             var parms = { TableName: 'VideoLibrary', IndexName: 'org-owner-index', KeyConditionExpression: 'Organization = :val', ExpressionAttributeValues: { ':val': { S: 'ecloudvault' } } };

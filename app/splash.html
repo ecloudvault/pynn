@@ -79,16 +79,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <!-- Drawer Content -->
         <paper-menu class="list" attr-for-selected="data-route" selected="{{route}}" on-iron-select="onMenuSelect">
-          <a data-route="home" href="/">
-            <iron-icon icon="home"></iron-icon>
-            <span>Home</span>
-          </a>
       
-
           <a data-route="login" href="/">
             <my-login id="userstatus"></my-login>
           </a>
 
+          <a data-route="home" href="/">
+            <iron-icon icon="home"></iron-icon>
+            <span>Home</span>
+          </a>
 
           <a data-route="vlist" href="/vlist">
             <iron-icon icon="list"></iron-icon>
@@ -122,7 +121,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <span class="flex"></span>
 
           <!-- Toolbar icons -->
-          <paper-icon-button icon="refresh"></paper-icon-button>
+          <!-- paper-icon-button icon="refresh"></paper-icon-button -->
           <paper-icon-button icon="search"></paper-icon-button>
 
           <!-- Application name -->
@@ -195,13 +194,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             <section data-route="vlist">
               <paper-material elevation="1">
-                <p class="paper-font-subhead">You now have videos:</p>
+                <!-- p class="paper-font-subhead">You now have videos:</p -->
                 <aws-list id="joe" vsource="{{vurl}}"></aws-list>
               </paper-material>
 
-              <paper-material elevation="1">
+              <!-- paper-material elevation="1">
                 <p class="paper-font-body2">{{vurl}}</p>
-              </paper-material>
+              </paper-material -->
             </section>
 
             <section data-route="view">

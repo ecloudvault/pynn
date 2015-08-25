@@ -10,15 +10,15 @@ Copyright (c) 2015 eCloudVault Authors. All rights reserved.
     }
   </style>
   <template>
-    <div>
+    <!-- div>
     <input class="paper-font-body2" value="{{vsource}}">
     <button class="paper-font-body2" on-click="setSource">play</button>
     </div>
-    <div>{{vsource}}</div>
+    <div>{{vsource}}</div -->
     <video id="vdisplay" width="320" height="240" controls>
       <source id="vsrc" type="video/webm">
     </video>
-    <div>current src: <span id="current"></span></div>
+    <!-- div>current src: <span id="current"></span></div -->
   </template>
 
   <script>
@@ -29,16 +29,27 @@ Copyright (c) 2015 eCloudVault Authors. All rights reserved.
           vsource: {
             type: String,
             notify: true
-          }
+          },
+        },
+
+        listeners: {
+          'vsource-changed': 'changeSource'
         },
 
         ready: function() {
-          this.$.current.textContent = this.$.vsrc.src;
+          //this.$.current.textContent = this.$.vsrc.src;
         },
 
-        setSource: function() {
+        //setSource: function() {
+        //  this.$.vsrc.src = 'https://s3-us-west-2.amazonaws.com/videopail/' + this.vsource;
+        //  this.$.current.textContent = this.$.vsrc.src;
+        //  this.$.vdisplay.load();
+        //},
+
+        changeSource: function(e) {
+          //this.$.stop();
           this.$.vsrc.src = 'https://s3-us-west-2.amazonaws.com/videopail/' + this.vsource;
-          this.$.current.textContent = this.$.vsrc.src;
+          //this.$.current.textContent = this.$.vsrc.src;
           this.$.vdisplay.load();
         }
       });
