@@ -8,7 +8,7 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 
-<dom-module id="aws-list">
+<dom-module id="vid-list">
   <style>
     :host {
       display: block;
@@ -37,7 +37,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <script>
     (function () {
       Polymer({
-        is: 'aws-list',
+        is: 'vid-list',
         properties: {
           selectedvideo: {
             type: Number,
@@ -59,7 +59,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         fetch: function() {
             var self = this;
-            var db = new AWS.DynamoDB( {apiVersion: '2012-08-10', region: 'us-west-2', accessKeyId: 'AKIAIOAPI7JRYJUHZKFQ', secretAccessKey: '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'} );
+            // use cognito credentials, Cognito_VideoVaultAuth_Role, has DynamoDB ReadOnly access
+            var db = new AWS.DynamoDB( {apiVersion: '2012-08-10', region: 'us-west-2'} );
             var parms = { TableName: 'VideoLibrary', IndexName: 'org-owner-index', KeyConditionExpression: 'Organization = :val', ExpressionAttributeValues: { ':val': { S: 'ecloudvault' } } };
             
             db.query( parms, function(err, data) {
