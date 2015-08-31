@@ -78,6 +78,8 @@ exports.jobCreator = function(event, context) {
         } else {
 
           if ( (data.ContentType == 'application/octet-stream') 
+              || (data.ContentType == 'video/mp4')
+              || (data.ContentType == 'video/mp4; charset=UTF-8')
               || (data.ContentType == 'video/x-msvideo')
               || (data.ContentType == 'video/x-msvideo; charset=UTF-8') ) {
 
