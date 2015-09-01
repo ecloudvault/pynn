@@ -5,8 +5,7 @@ var AWS = require('aws-sdk');
 var s3 = new AWS.S3({apiVersion: '2006-03-01'});
 
 // DynamoDB
-var table = new AWS.DynamoDB( {apiVersion: '2012-08-10', region:  'us-west-2',
-                accessKeyId: 'AKIAIOAPI7JRYJUHZKFQ', secretAccessKey: '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', params: {TableName: 'VideoLibrary'}});
+var table = new AWS.DynamoDB( {apiVersion: '2012-08-10', region:  'us-west-2', params: {TableName: 'VideoLibrary'}});
 
 // Elastic Transcoder
 var eltr = new AWS.ElasticTranscoder({

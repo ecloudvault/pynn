@@ -13,6 +13,9 @@ import (
 	"github.com/markbates/goth/providers/amazon"
 )
 
+
+//workingDirectory, _ := os.Getwd() 
+
 // cookie handling
 
 var cookieHandler = securecookie.New(
@@ -87,11 +90,15 @@ const indexPage = `
 </form>
 `
 
-func indexPageHandler(response http.ResponseWriter, request *http.Request) {
+func makeIndexPageHandler(page string) http.HandlerFunc {
 		//t, _ := template.New("foo").Parse(indexTemplate)
 		//t.Execute(response, nil)
     //fmt.Fprintf(response, indexPage)
-    http.ServeFile(response, request, "/home/stephen/ecloud/pynn/app/splash.html");
+     
+    return func(rsp http.ResponseWriter, req *http.Request) {
+      fmt.Println( "index: " + page )
+      http.ServeFile(rsp, req, page)
+    }
 }
 
 // internal page
@@ -167,6 +174,13 @@ var router = mux.NewRouter()
 
 func main() {
 
+  workingDirectory, err := os.Getwd()
+
+  if err != nil {
+    fmt.Println( "working directory error" )
+    return
+  }
+
   gothic.GetProviderName = func(req *http.Request) (string, error) {
                                                                       return "amazon", nil
                            }
@@ -175,24 +189,16 @@ func main() {
     amazon.New(os.Getenv("AMAZON_KEY"), os.Getenv("AMAZON_SECRET"), "https://ecloud.nimbostrati.com:9898/auth/amazon/callback", "profile"),
 	)
 	
-  router.HandleFunc("/", indexPageHandler)
+  router.HandleFunc("/", makeIndexPageHandler(workingDirectory + "/app/splash.html"))
 	router.HandleFunc("/auth/amazon/callback", callbackPageHandler)
-	//router.HandleFunc("/auth/amazon", gothic.BeginAuthHandler)
 	router.HandleFunc("/auth/amazon", startAuthHandler)
 
-	//router.HandleFunc("/internal", internalPageHandler)
 
-	//router.HandleFunc("/login", loginHandler).Methods("POST")
-	//router.HandleFunc("/logout", logoutHandler).Methods("POST")
-
-  //router.PathPrefix("/images/").Handler(http.StripPrefix("/images/", http.FileServer(http.Dir("/home/stephen/ecloud/entrypoint/app/images/"))))
-
-  ServeStatic(router, "/home/stephen/ecloud/pynn/")
-//  ServeBower(router, "/home/stephen/ecloud/entrypoint/")
+  ServeStatic(router, workingDirectory)
 
 	http.Handle("/", router)
-	//http.ListenAndServe(":8000", nil)
-  fmt.Println("About to listen and serve.")
+
+  fmt.Println("About to listen and serve from(", workingDirectory, ").")
   http.ListenAndServeTLS(":9898", os.Getenv("GOTH_SSL_CERT"), os.Getenv("GOTH_SSL_KEY"), nil) 
 }
 
