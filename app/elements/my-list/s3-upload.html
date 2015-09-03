@@ -35,7 +35,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
 
         ready: function() {
-            this.bucket = new AWS.S3({params: {region: 'us-west-2', Bucket: 'videopail'}});
+            //this.bucket = new AWS.S3({params: {region: 'us-west-2', Bucket: 'videopail'}});
             //this.bucket.endpoint = 'https://videopail.s3-us-west-2.amazonaws.com';
             //this.loadResults = this.bucket.endpoint;
         },
@@ -48,7 +48,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             if (file) {
               this.loadResults = '';
 
-              var params = {Key: 'video/raw/'+file.name, ContentType: file.type, Body: file};
+              this.bucket = new AWS.S3({region: 'us-west-2'});
+              var params = {Bucket: 'videopail', Key: 'video/raw/'+file.name, ContentType: file.type, Body: file};
               this.bucket.upload(params, function(err,data) {
                 if(err) {
                   self.loadResults = 'ERROR: ';
